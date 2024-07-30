@@ -1,2 +1,2 @@
 # better-monkeytype
-Chrome extension to monkeytype.com that improves practice.
+Chrome extension to monkeytype.com that improves practice quality.
