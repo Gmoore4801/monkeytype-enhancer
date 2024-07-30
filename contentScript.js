@@ -80,7 +80,7 @@ window.addEventListener('keypress', e => {
         await delay(300);
         document.querySelector('.textButton[mode="time"]').click();
         document.querySelector('.view-settings').click();
-        await delay(500);
+        await delay(600);
         document.querySelector('.inputs [value="' + language + '"]').setAttribute("selected", "");
         document.querySelector('#startTestButton').click();
     }
@@ -99,6 +99,7 @@ window.addEventListener('keypress', e => {
 
     async function checkLetter() {
         let word = document.querySelector('.word.active');
+        if (word === null) return;
         let lastLetterPos = word.querySelectorAll(".correct, .incorrect").length;
         await delay(1);
         let letter = word.children[lastLetterPos];
