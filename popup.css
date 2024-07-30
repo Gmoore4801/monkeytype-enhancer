@@ -1,0 +1,5 @@
+.main {
+    width: 600px;
+    height: 420px;
+    overflow-y: scroll;
+}

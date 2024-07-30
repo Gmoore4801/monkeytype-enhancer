@@ -1,0 +1,24 @@
+{
+    "name": "Better MonkeyType",
+    "version": "1.0",
+    "description": "Adds more features to monkeytype",
+    "permissions": ["storage", "tabs"],
+    "host_permissions": ["https://*.monkeytype.com/*"],
+    "content_scripts": [
+      {
+        "matches": ["https://*.monkeytype.com/*"],
+        "js": ["contentScript.js"]
+      }
+    ],
+    "action": {
+      "default_icon": {
+        "16": "images/bmt16.png",
+        "32": "images/bmt32.png",
+        "48": "images/bmt48.png",
+        "128": "images/bmt128.png"
+      },
+      "default_title": "Better MonkeyType",
+      "default_popup": "popup.html"
+    },
+    "manifest_version": 3
+}
