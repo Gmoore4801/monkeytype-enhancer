@@ -1,5 +1,24 @@
+::-webkit-scrollbar {
+    background-color: #323437;
+    width: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+    background-color: #646669;
+}
+
+body {
+    background-color: #323437;
+    color: #D1D0C5;
+}
+
 .main {
     width: 600px;
     height: 420px;
     overflow-y: scroll;
+}
+
+a {
+    color: #D1D0C5;
+    text-decoration-color: #D1D0C5;
 }
