@@ -1,8 +1,8 @@
 {
     "name": "Better MonkeyType",
     "version": "1.0",
-    "description": "Adds more features to monkeytype",
-    "permissions": ["storage", "tabs"],
+    "description": "Improves practice quality on MonkeyType",
+    "permissions": ["storage"],
     "host_permissions": ["https://*.monkeytype.com/*"],
     "content_scripts": [
       {

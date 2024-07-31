@@ -1,9 +1,12 @@
 var correct = new Map();
 var incorrect = new Map();
+var spaces = 0;
+
 
 window.addEventListener('keypress', e => {
     let time = document.querySelector('.timeToday');
     let timeMinutes = time.innerText === null ? 0 : time.innerText.substr(3,2);
+    let timeSeconds = time.innerText === null ? 0 : time.innerText.substr(6,2);
     let wait = false;
     const currentLang = document.querySelector('#testModesNotice .textButton').textContent;
     const currentMode = document.querySelector('.textButton[mode="custom"]').classList.contains("active") ? true : false;
@@ -28,25 +31,45 @@ window.addEventListener('keypress', e => {
     async function setCustomMode(language) {
         let letter = "a";
         let max = 0;
+        let totalCorrect = 0;
+        let totalIncorrect = 0;
         console.log("Your accuracy for each letter:");
         for (let i = 0; i < 26; i++) {
             let l = String.fromCharCode(97 + i);
             let c = correct.get(l) == null ? 0 : correct.get(l);
+            totalCorrect += c;
             let w = incorrect.get(l) == null ? 0 : incorrect.get(l);
+            totalIncorrect += w;
             let percent = c + w == 0 ? null : Math.round(100 * c / (c + w));
             let total = c + w;
             console.log(l + ": " + percent + "%    " + c + "/" + total);
             if (incorrect.get(l) > max) { letter = l; max = incorrect.get(l); }
         }
+        
+        let acc = Math.round(10000 * totalCorrect / (totalCorrect + totalIncorrect)) / 100;
+        let date = new Date();
+        let day = date.getDate();
+        let month = date.getMonth() + 1;
+        let year = date.getFullYear();
+        let wpm = (totalCorrect + spaces) / (timeMinutes + timeSeconds / 60) * 2;
+        let typingSessions;
+        chrome.storage.local.get('typingSessions', result => {
+            typingSessions = result.typingSessions || [];
+            let newSession = {
+                date: `${month}/${day}/${year}`,
+                acc: acc,
+                wpm: wpm
+            };
+            typingSessions.push(newSession);
+            chrome.storage.local.set({ typingSessions: typingSessions });
+        });
         console.log("Changing test to focus on: " + letter);
         document.querySelector('.textButton[mode="custom"]').click();
         document.querySelector('.customText .textButton').click();
         document.querySelector('.button.wordfilter').click();
         await delay(500);
         let list = document.querySelectorAll('.ss-list div');
-        list.forEach(item => {
-            if (item.innerText === language) item.click();
-        });
+        list.forEach(item => { if (item.innerText === language) item.click(); });
         document.querySelector('.wordIncludeInput').value = letter;
         document.querySelector('.wordExcludeInput').value = '-';
         document.querySelector('.setButton').click();
@@ -93,6 +116,7 @@ window.addEventListener('keypress', e => {
 
 
 window.addEventListener('keypress', e => {
+    if (e.key === " ") spaces++;
     if (e.key === " " || e.key === "Enter" || document.querySelector('.word.active') == null) return;
 
     const delay = ms => new Promise(res => setTimeout(res, ms));
