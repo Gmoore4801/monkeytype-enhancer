@@ -45,10 +45,23 @@ function displaySessionData(index) {
     dataTab.click();
     document.getElementsByClassName(dataTab.classList[0])[0].classList.remove("hidden");
 
-    document.getElementById("data").innerHTML = '';
+    let data = document.getElementById("data");
+    data.innerHTML = '';
+    let date = document.createElement('h2');
+    chrome.storage.local.get('typingSessions', result => { date.innerText = result.typingSessions[result.typingSessions.length-index-1].date; });
+    data.append(date);
+    let acc = document.createElement('p');
+    chrome.storage.local.get('typingSessions', result => { acc.innerText += "Accuracy: " + result.typingSessions[result.typingSessions.length-index-1].acc; });
+    data.append(acc);
+    let wpm = document.createElement('p');
+    chrome.storage.local.get('typingSessions', result => { wpm.innerText += "WPM: " + result.typingSessions[result.typingSessions.length-index-1].wpm; });
+    data.append(wpm);
+    let letterTested = document.createElement('p');
+    chrome.storage.local.get('typingSessions', result => { letterTested.innerText += "Letter Tested: " + result.typingSessions[result.typingSessions.length-index-1].letter; });
+    data.append(letterTested);
     let table = document.createElement('table');
     table.setAttribute("id", "session-stats");
-    document.getElementById("data").append(table);
+    data.append(table);
     let tableHead = table.createTHead();
     let row = tableHead.insertRow();
     row.insertCell(0).outerHTML = "<th>Letter</th>";
