@@ -3,13 +3,16 @@ var incorrect = new Map();
 var spaces = 0;
 
 var delayMultiplier = 1;
+var off = false;
 
 window.addEventListener('keypress', e => {
     if (e.key === "Enter") {
         chrome.storage.local.get("checkboxes", result => {
-            if (result.checkboxes[0]) delayMultiplier = 2;
+            if (result.checkboxes[0]) off = true;
+            if (result.checkboxes[1]) delayMultiplier = 2;
         });
     }
+    if (off) return;
     let time = document.querySelector('.timeToday');
     let timeMinutes = time.innerText === null ? 0 : time.innerText.substr(3,2);
     let timeSeconds = time.innerText === null ? 0 : time.innerText.substr(6,2);
@@ -126,6 +129,7 @@ window.addEventListener('keypress', e => {
 
 
 window.addEventListener('keypress', e => {
+    if (off) return;
     if (e.key === "Enter" || document.querySelector('.word.active') == null || document.querySelector('#customTextModal') !== null) return;
     if (e.key === " ") { spaces++; return; }
     const delay = ms => new Promise(res => setTimeout(res, ms * delayMultiplier));

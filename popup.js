@@ -80,16 +80,9 @@ function slider(section) {
     document.getElementById(section.classList[0]).classList.remove("hidden");
 }
 
-function setSettings(index) {
-    chrome.storage.local.get("checkboxes", result => {
-        try { if (result.checkboxes[index]) document.getElementById("checkbox1").setAttribute("checked", ''); }
-        catch (error) { console.log(error); }
-    });
-}
-
 function settingsInit(settings) {
     chrome.storage.local.get("checkboxes", result => {
-        let checkboxes = result.checkboxes || [false]; // one false for each setting created
+        let checkboxes = result.checkboxes || [false, false]; // one false for each setting created
         for (let i = 0; i < checkboxes.length; i++) {
             if (checkboxes[i]) settings[i].setAttribute("checked", '');
         }
@@ -98,7 +91,6 @@ function settingsInit(settings) {
 
 function settingClicked(checkbox, index) {
     let checked = checkbox.checked ? true : false;
-    console.log(checked);
     chrome.storage.local.get("checkboxes", result => {
         let checkboxes = result.checkboxes || [];
         checkboxes[index] = checked;
@@ -121,10 +113,12 @@ document.addEventListener("DOMContentLoaded", () => {
     settings.addEventListener("click", () => { slider(settings) });
     data.addEventListener("click", () => { slider(data) });
 
+    
+    const off = document.getElementById("off");
+    off.addEventListener("click", () => { settingClicked(off, 0); });
     const timing = document.getElementById("timing");
-    timing.addEventListener("click", () => { settingClicked(timing, 0); })
-    settingsInit([timing]);
-    setSettings();
+    timing.addEventListener("click", () => { settingClicked(timing, 1); });
+    settingsInit([off, timing]);
 
     let dataTab = document.getElementsByClassName("data")[0];
     if (!dataTab.classList.contains("active") && !dataTab.classList.contains("hidden")) dataTab.classList.add("hidden");
