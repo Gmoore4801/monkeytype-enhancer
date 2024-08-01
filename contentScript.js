@@ -140,6 +140,7 @@ window.addEventListener('keypress', e => {
         let lastLetterPos = word.querySelectorAll(".correct, .incorrect").length;
         await delay(1);
         let letter = word.children[lastLetterPos];
+        if (letter === null) return;
         if (letter.classList.contains("correct")) {
             let last = correct.get(letter.innerText) == null ? 0 : correct.get(letter.innerText);
             correct.set(letter.innerText, last + 1);
