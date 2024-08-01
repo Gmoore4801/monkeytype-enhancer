@@ -80,9 +80,32 @@ function slider(section) {
     document.getElementById(section.classList[0]).classList.remove("hidden");
 }
 
-const info = document.getElementsByClassName("info")[0];
-const stats = document.getElementsByClassName("stats")[0];
-const faqs = document.getElementsByClassName("faqs")[0];
+function setSettings(index) {
+    chrome.storage.local.get("checkboxes", result => {
+        try { if (result.checkboxes[index]) document.getElementById("checkbox1").setAttribute("checked", ''); }
+        catch (error) { console.log(error); }
+    });
+}
+
+function settingsInit(settings) {
+    chrome.storage.local.get("checkboxes", result => {
+        let checkboxes = result.checkboxes || [false]; // one false for each setting created
+        for (let i = 0; i < checkboxes.length; i++) {
+            if (checkboxes[i]) settings[i].setAttribute("checked", '');
+        }
+    });
+}
+
+function settingClicked(checkbox, index) {
+    let checked = checkbox.checked ? true : false;
+    console.log(checked);
+    chrome.storage.local.get("checkboxes", result => {
+        let checkboxes = result.checkboxes || [];
+        checkboxes[index] = checked;
+        chrome.storage.local.set({ checkboxes: checkboxes });
+    });
+}
+
 
 document.addEventListener("DOMContentLoaded", () => {
     populateTable();
@@ -90,11 +113,18 @@ document.addEventListener("DOMContentLoaded", () => {
     const info = document.getElementsByClassName("info")[0];
     const stats = document.getElementsByClassName("stats")[0];
     const faqs = document.getElementsByClassName("faqs")[0];
+    const settings = document.getElementsByClassName("settings")[0];
     const data = document.getElementsByClassName("data")[0];
     info.addEventListener("click", () => { slider(info) });
     stats.addEventListener("click", () => { slider(stats) });
     faqs.addEventListener("click", () => { slider(faqs) });
+    settings.addEventListener("click", () => { slider(settings) });
     data.addEventListener("click", () => { slider(data) });
+
+    const timing = document.getElementById("timing");
+    timing.addEventListener("click", () => { settingClicked(timing, 0); })
+    settingsInit([timing]);
+    setSettings();
 
     let dataTab = document.getElementsByClassName("data")[0];
     if (!dataTab.classList.contains("active") && !dataTab.classList.contains("hidden")) dataTab.classList.add("hidden");

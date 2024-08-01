@@ -1,9 +1,15 @@
 var correct = new Map();
 var incorrect = new Map();
 var spaces = 0;
-chrome.storage.local.clear();
+
+var delayMultiplier = 1;
 
 window.addEventListener('keypress', e => {
+    if (e.key === "Enter") {
+        chrome.storage.local.get("checkboxes", result => {
+            if (result.checkboxes[0]) delayMultiplier = 2;
+        });
+    }
     let time = document.querySelector('.timeToday');
     let timeMinutes = time.innerText === null ? 0 : time.innerText.substr(3,2);
     let timeSeconds = time.innerText === null ? 0 : time.innerText.substr(6,2);
@@ -26,7 +32,7 @@ window.addEventListener('keypress', e => {
     }
     if (e.key !== "Enter" || wait) return;
 
-    const delay = ms => new Promise(res => setTimeout(res, ms));
+    const delay = ms => new Promise(res => setTimeout(res, ms * delayMultiplier));
 
     async function setCustomMode(language) {
         let letter = "a";
@@ -104,7 +110,7 @@ window.addEventListener('keypress', e => {
     }
     
     async function setEnglish(language) {
-        await delay(300);
+        await delay(400);
         document.querySelector('.textButton[mode="time"]').click();
         document.querySelector('.view-settings').click();
         await delay(600);
@@ -122,7 +128,7 @@ window.addEventListener('keypress', e => {
 window.addEventListener('keypress', e => {
     if (e.key === "Enter" || document.querySelector('.word.active') == null || document.querySelector('#customTextModal') !== null) return;
     if (e.key === " ") { spaces++; return; }
-    const delay = ms => new Promise(res => setTimeout(res, ms));
+    const delay = ms => new Promise(res => setTimeout(res, ms * delayMultiplier));
 
     async function checkLetter() {
         let word = document.querySelector('.word.active');
