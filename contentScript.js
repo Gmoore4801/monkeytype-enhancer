@@ -4,6 +4,7 @@ var spaces = 0;
 
 var delayMultiplier = 1;
 var off = false;
+var postStats = false;
 
 window.addEventListener('keypress', e => {
     if (e.key === "Enter") {
@@ -38,45 +39,46 @@ window.addEventListener('keypress', e => {
     const delay = ms => new Promise(res => setTimeout(res, ms * delayMultiplier));
 
     async function setCustomMode(language) {
-        let letter = "a";
-        let max = 0;
-        let totalCorrect = 0;
-        let totalIncorrect = 0;
-        let data = [];
-        console.log("Your accuracy for each letter:");
-        for (let i = 0; i < 26; i++) {
-            let l = String.fromCharCode(97 + i);
-            let c = correct.get(l) == null ? 0 : correct.get(l);
-            totalCorrect += c;
-            let w = incorrect.get(l) == null ? 0 : incorrect.get(l);
-            totalIncorrect += w;
-            let percent = c + w == 0 ? null : Math.round(100 * c / (c + w));
-            let total = c + w;
-            let letterData = [l, percent, c, total];
-            data.push(letterData);
-            if (incorrect.get(l) > max) { letter = l; max = incorrect.get(l); }
+        if (!postStats) {
+            let letter = "a";
+            let max = 0;
+            let totalCorrect = 0;
+            let totalIncorrect = 0;
+            let data = [];
+            console.log("Your accuracy for each letter:");
+            for (let i = 0; i < 26; i++) {
+                let l = String.fromCharCode(97 + i);
+                let c = correct.get(l) == null ? 0 : correct.get(l);
+                totalCorrect += c;
+                let w = incorrect.get(l) == null ? 0 : incorrect.get(l);
+                totalIncorrect += w;
+                let percent = c + w == 0 ? null : Math.round(100 * c / (c + w));
+                let total = c + w;
+                let letterData = [l, percent, c, total];
+                data.push(letterData);
+                if (incorrect.get(l) > max) { letter = l; max = incorrect.get(l); }
+            }
+            
+            let acc = Math.round(10000 * totalCorrect / (totalCorrect + totalIncorrect)) / 100;
+            let date = new Date();
+            let day = date.getDate();
+            let month = date.getMonth() + 1;
+            let year = date.getFullYear();
+            let wpm = (totalCorrect + spaces) / (timeMinutes + timeSeconds / 60) * 2;
+            let typingSessions;
+            chrome.storage.local.get('typingSessions', result => {
+                typingSessions = result.typingSessions || [];
+                let newSession = {
+                    date: `${month}/${day}/${year}`,
+                    acc: acc,
+                    wpm: wpm,
+                    letter: letter,
+                    data: data
+                };
+                typingSessions.push(newSession);
+                chrome.storage.local.set({ typingSessions: typingSessions });
+            });
         }
-        
-        let acc = Math.round(10000 * totalCorrect / (totalCorrect + totalIncorrect)) / 100;
-        let date = new Date();
-        let day = date.getDate();
-        let month = date.getMonth() + 1;
-        let year = date.getFullYear();
-        let wpm = (totalCorrect + spaces) / (timeMinutes + timeSeconds / 60) * 2;
-        let typingSessions;
-        chrome.storage.local.get('typingSessions', result => {
-            typingSessions = result.typingSessions || [];
-            let newSession = {
-                date: `${month}/${day}/${year}`,
-                acc: acc,
-                wpm: wpm,
-                letter: letter,
-                data: data
-            };
-            typingSessions.push(newSession);
-            chrome.storage.local.set({ typingSessions: typingSessions });
-        });
-        console.log("Changing test to focus on: " + letter);
         document.querySelector('.textButton[mode="custom"]').click();
         document.querySelector('.customText .textButton').click();
         document.querySelector('.button.wordfilter').click();
