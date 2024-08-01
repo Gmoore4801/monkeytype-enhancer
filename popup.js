@@ -39,6 +39,11 @@ function populateTable() {
     });
 }
 
+function sortLetters(a, b) { //sorts based on the number of incorrect types
+    if (a[3] - a[2] === b[3] - b[2]) return -1;
+    else return (a[3] - a[2] < b[3] - b[2]) ? -1 : 1;
+}
+
 function displaySessionData(index) {
     let dataTab = document.getElementsByClassName("data")[0];
     dataTab.classList.remove("hidden");
@@ -72,7 +77,7 @@ function displaySessionData(index) {
 
     chrome.storage.local.get('typingSessions', result => {
         let typingSessions = result.typingSessions;
-        typingSessions[typingSessions.length-index-1].data.forEach(letterStats => {
+        typingSessions[typingSessions.length-index-1].data.sort(sortLetters).reverse().forEach(letterStats => {
             row = tableBody.insertRow();
             row.insertCell(0).textContent = letterStats[0];
             row.insertCell(1).textContent = letterStats[1] === null ? '' : letterStats[1] + "%";

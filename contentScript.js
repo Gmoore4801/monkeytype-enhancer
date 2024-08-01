@@ -1,7 +1,6 @@
 var correct = new Map();
 var incorrect = new Map();
 var spaces = 0;
-// chrome.storage.local.clear();
 
 var delayMultiplier = 1;
 var off = false;
