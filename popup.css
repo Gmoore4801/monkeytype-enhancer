@@ -10,9 +10,10 @@
 body {
     background-color: #323437;
     color: #D1D0C5;
+    font-size: medium;
 }
 
-.main {
+#main {
     width: 600px;
     height: 420px;
     overflow-y: scroll;
@@ -25,4 +26,43 @@ a {
 
 td, th {
     padding-right: 20px;
+}
+
+ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+#slider li {
+    display: inline;
+    padding: 10px 20px;
+    border-radius: 25px;
+}
+
+#slider li.hidden {
+    display: none;
+}
+
+#slider li:hover, .active {
+    background-color: #27282b;
+    transition-duration: 250ms;
+}
+
+.active {
+    background-color: #2b2c30;
+}
+
+.hidden {
+    display: none;
+}
+
+#stats-table button {
+    border: none;
+    background: none;
+    color: #D1D0C5;
+    font-size: medium;
+}
+
+#stats-table button:hover {
+    font-weight: bold;
 }

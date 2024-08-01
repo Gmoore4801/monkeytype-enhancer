@@ -1,7 +1,7 @@
 var correct = new Map();
 var incorrect = new Map();
 var spaces = 0;
-
+chrome.storage.local.clear();
 
 window.addEventListener('keypress', e => {
     let time = document.querySelector('.timeToday');
@@ -33,6 +33,7 @@ window.addEventListener('keypress', e => {
         let max = 0;
         let totalCorrect = 0;
         let totalIncorrect = 0;
+        let data = [];
         console.log("Your accuracy for each letter:");
         for (let i = 0; i < 26; i++) {
             let l = String.fromCharCode(97 + i);
@@ -42,7 +43,8 @@ window.addEventListener('keypress', e => {
             totalIncorrect += w;
             let percent = c + w == 0 ? null : Math.round(100 * c / (c + w));
             let total = c + w;
-            console.log(l + ": " + percent + "%    " + c + "/" + total);
+            let letterData = [l, percent, c, total];
+            data.push(letterData);
             if (incorrect.get(l) > max) { letter = l; max = incorrect.get(l); }
         }
         
@@ -58,7 +60,9 @@ window.addEventListener('keypress', e => {
             let newSession = {
                 date: `${month}/${day}/${year}`,
                 acc: acc,
-                wpm: wpm
+                wpm: wpm,
+                letter: letter,
+                data: data
             };
             typingSessions.push(newSession);
             chrome.storage.local.set({ typingSessions: typingSessions });
@@ -116,9 +120,8 @@ window.addEventListener('keypress', e => {
 
 
 window.addEventListener('keypress', e => {
-    if (e.key === " ") spaces++;
-    if (e.key === " " || e.key === "Enter" || document.querySelector('.word.active') == null) return;
-
+    if (e.key === "Enter" || document.querySelector('.word.active') == null || document.querySelector('#customTextModal') !== null) return;
+    if (e.key === " ") { spaces++; return; }
     const delay = ms => new Promise(res => setTimeout(res, ms));
 
     async function checkLetter() {
