@@ -21,7 +21,7 @@ window.addEventListener('keypress', e => {
     const currentLang = document.querySelector('#testModesNotice .textButton').textContent;
     const currentMode = document.querySelector('.textButton[mode="custom"]').classList.contains("active") ? true : false;
     switch (true) {
-        case (timeMinutes < 1):
+        case (timeMinutes < 5):
             if (currentLang === "english 5k") wait = true;
             break;
         case (timeMinutes < 10):
@@ -123,7 +123,7 @@ window.addEventListener('keypress', e => {
         document.querySelector('#startTestButton').click();
     }
 
-    if (timeMinutes < 1) { setEnglish("english_5k"); }
+    if (timeMinutes < 5) { setEnglish("english_5k"); }
     else if (timeMinutes < 10) { setCustomMode("english 5k"); }
     else if (timeMinutes < 13) { setEnglish("english_1k"); }
     else if (timeMinutes < 20) { setEnglish("english"); }
