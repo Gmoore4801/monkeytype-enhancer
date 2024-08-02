@@ -21,7 +21,7 @@ window.addEventListener('keypress', e => {
     const currentLang = document.querySelector('#testModesNotice .textButton').textContent;
     const currentMode = document.querySelector('.textButton[mode="custom"]').classList.contains("active") ? true : false;
     switch (true) {
-        case (timeMinutes < 5):
+        case (timeMinutes < 1):
             if (currentLang === "english 5k") wait = true;
             break;
         case (timeMinutes < 10):
@@ -39,8 +39,8 @@ window.addEventListener('keypress', e => {
     const delay = ms => new Promise(res => setTimeout(res, ms * delayMultiplier));
 
     async function setCustomMode(language) {
+        let letter = "a";
         if (!postStats) {
-            let letter = "a";
             let max = 0;
             let totalCorrect = 0;
             let totalIncorrect = 0;
@@ -123,7 +123,7 @@ window.addEventListener('keypress', e => {
         document.querySelector('#startTestButton').click();
     }
 
-    if (timeMinutes < 5) { setEnglish("english_5k"); }
+    if (timeMinutes < 1) { setEnglish("english_5k"); }
     else if (timeMinutes < 10) { setCustomMode("english 5k"); }
     else if (timeMinutes < 13) { setEnglish("english_1k"); }
     else if (timeMinutes < 20) { setEnglish("english"); }
@@ -143,13 +143,18 @@ window.addEventListener('keypress', e => {
         await delay(1);
         let letter = word.children[lastLetterPos];
         if (letter === null) return;
-        if (letter.classList.contains("correct")) {
-            let last = correct.get(letter.innerText) == null ? 0 : correct.get(letter.innerText);
-            correct.set(letter.innerText, last + 1);
+        try {
+            if (letter.classList.contains("correct")) {
+                let last = correct.get(letter.innerText) == null ? 0 : correct.get(letter.innerText);
+                correct.set(letter.innerText, last + 1);
+            }
+            else {
+                let last = incorrect.get(letter.innerText) == null ? 0 : incorrect.get(letter.innerText);
+                incorrect.set(letter.innerText, last + 1);
+            }
         }
-        else {
-            let last = incorrect.get(letter.innerText) == null ? 0 : incorrect.get(letter.innerText);
-            incorrect.set(letter.innerText, last + 1);
+        catch (error) {
+            console.log(error);
         }
     }
     
