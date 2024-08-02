@@ -119,7 +119,12 @@ window.addEventListener('keypress', e => {
         document.querySelector('.textButton[mode="time"]').click();
         document.querySelector('.view-settings').click();
         await delay(600);
-        document.querySelector('.inputs [value="' + language + '"]').setAttribute("selected", "");
+        try {
+            document.querySelector('.inputs [value="' + language + '"]').setAttribute("selected", "");
+        }
+        catch (error) {
+            console.log(error);
+        }
         document.querySelector('#startTestButton').click();
     }
 
