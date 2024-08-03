@@ -110,7 +110,7 @@ function settingsInit(settings) {
 function settingClicked(checkbox, index) {
     let checked = checkbox.checked ? true : false;
     chrome.storage.local.get("checkboxes", result => {
-        let checkboxes = result.checkboxes || [];
+        let checkboxes = result.checkboxes || [false, false]; // one false for each setting created
         checkboxes[index] = checked;
         chrome.storage.local.set({ checkboxes: checkboxes });
     });
@@ -170,3 +170,7 @@ settingsInit([off, timing]);
 
 let dataTab = document.getElementsByClassName("data")[0];
 if (!dataTab.classList.contains("active") && !dataTab.classList.contains("hidden")) dataTab.classList.add("hidden");
+
+chrome.storage.local.get("checkboxes", result => {
+    if (result.checkboxes == null) chrome.storage.local.set({checkboxes: [false, false]});
+});

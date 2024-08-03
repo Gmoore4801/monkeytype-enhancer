@@ -6,13 +6,12 @@ var delayMultiplier = 1;
 var off = false;
 var postStats = false;
 
+chrome.storage.local.get("checkboxes", result => {
+    if (result.checkboxes[0]) off = true;
+    if (result.checkboxes[1]) delayMultiplier = 2;
+});
+
 window.addEventListener('keypress', e => {
-    if (e.key === "Enter") {
-        chrome.storage.local.get("checkboxes", result => {
-            if (result.checkboxes[0]) off = true;
-            if (result.checkboxes[1]) delayMultiplier = 2;
-        });
-    }
     if (off) return;
     let time = document.querySelector('.timeToday');
     let timeMinutes = time.innerText === null ? 0 : time.innerText.substr(3,2);
@@ -45,7 +44,6 @@ window.addEventListener('keypress', e => {
             let totalCorrect = 0;
             let totalIncorrect = 0;
             let data = [];
-            console.log("Your accuracy for each letter:");
             for (let i = 0; i < 26; i++) {
                 let l = String.fromCharCode(97 + i);
                 let c = correct.get(l) == null ? 0 : correct.get(l);
@@ -136,9 +134,11 @@ window.addEventListener('keypress', e => {
 
 
 window.addEventListener('keypress', e => {
-    if (off) return;
-    if (e.key === "Enter" || document.querySelector('.word.active') == null || document.querySelector('#customTextModal') !== null) return;
+    if (off || e.key === "Enter") return;
+    if (!document.getElementById("result").classList.contains("hidden")) return;
+    if (document.querySelector('#customTextModal') !== null) return;
     if (e.key === " ") { spaces++; return; }
+
     const delay = ms => new Promise(res => setTimeout(res, ms * delayMultiplier));
 
     async function checkLetter() {
