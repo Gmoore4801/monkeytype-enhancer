@@ -12,10 +12,10 @@
     ],
     "action": {
       "default_icon": {
-        "16": "images/bmt16.png",
-        "32": "images/bmt32.png",
-        "48": "images/bmt48.png",
-        "128": "images/bmt128.png"
+        "16": "images/mt16.png",
+        "32": "images/mt32.png",
+        "48": "images/mt48.png",
+        "128": "images/mt128.png"
       },
       "default_title": "MonkeyType Enhancer",
       "default_popup": "popup.html"
