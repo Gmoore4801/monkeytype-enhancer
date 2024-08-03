@@ -100,7 +100,7 @@ function slider(section) {
 
 function settingsInit(settings) {
     chrome.storage.local.get("checkboxes", result => {
-        let checkboxes = result.checkboxes || [false, false]; // one false for each setting created
+        let checkboxes = result.checkboxes || [false, false];
         for (let i = 0; i < checkboxes.length; i++) {
             if (checkboxes[i]) settings[i].setAttribute("checked", '');
         }
@@ -110,7 +110,7 @@ function settingsInit(settings) {
 function settingClicked(checkbox, index) {
     let checked = checkbox.checked ? true : false;
     chrome.storage.local.get("checkboxes", result => {
-        let checkboxes = result.checkboxes || [false, false]; // one false for each setting created
+        let checkboxes = result.checkboxes || [false, false];
         checkboxes[index] = checked;
         chrome.storage.local.set({ checkboxes: checkboxes });
     });
@@ -172,5 +172,5 @@ let dataTab = document.getElementsByClassName("data")[0];
 if (!dataTab.classList.contains("active") && !dataTab.classList.contains("hidden")) dataTab.classList.add("hidden");
 
 chrome.storage.local.get("checkboxes", result => {
-    if (result.checkboxes == null) chrome.storage.local.set({checkboxes: [false, false]});
+    if (result.checkboxes == null) chrome.storage.local.set({checkboxes: [false, false]}); // one false for each setting created
 });
