@@ -1,5 +1,5 @@
 {
-    "name": "Better MonkeyType",
+    "name": "MonkeyType Enhancer",
     "version": "1.0",
     "description": "Improves practice quality on MonkeyType",
     "permissions": ["storage"],
@@ -17,7 +17,7 @@
         "48": "images/bmt48.png",
         "128": "images/bmt128.png"
       },
-      "default_title": "Better MonkeyType",
+      "default_title": "MonkeyType Enhancer",
       "default_popup": "popup.html"
     },
     "manifest_version": 3
