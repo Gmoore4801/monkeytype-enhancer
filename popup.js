@@ -141,7 +141,7 @@ function streak() {
         let year = today.getFullYear();
         today = month + "/" + day + "/" + year;
         today = parseDate(today);
-        if (today.getTime() - parseDate(typingSessions[typingSessions.length-1].date).getTime() > oneDayInMs) streak = 0;
+        if (typingSessions.length > 0 && today.getTime() - parseDate(typingSessions[typingSessions.length-1].date).getTime() > oneDayInMs) streak = 0;
         document.getElementById("streak").innerHTML += streak + " days";
         document.getElementById("max-streak").innerHTML += maxStreak + " days";
     });
