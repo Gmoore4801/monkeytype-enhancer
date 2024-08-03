@@ -123,7 +123,7 @@ function parseDate(dateStr) {
 
 function streak() {
     chrome.storage.local.get('typingSessions', result => {
-        let typingSessions = result.typingSessions;
+        let typingSessions = result.typingSessions || [];
         let lastDate = parseDate("4/1/2020");
         const oneDayInMs = 24 * 60 * 60 * 1000;
         let streak = 0;
