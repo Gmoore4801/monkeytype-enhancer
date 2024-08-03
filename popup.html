@@ -1,5 +1,4 @@
 <link href="popup.css" rel="stylesheet" type="text/css" />
-<script type="module" src="popup.js"></script>
 
 <body>
   <div id="main">
@@ -28,6 +27,8 @@
     </div>
     <div id="stats" class="hidden">
       <h2>Your stats: </h2>
+      <p id="streak"><strong>Streak: </strong></p>
+      <p id="max-streak"><strong>Longest Streak: </strong></p>
       <p id="no-stats"></p>
       <table id="stats-table">
       </table>
@@ -54,4 +55,5 @@
       <table id="session-stats"></table>
     </div>
   </div>
+  <script src="popup.js"></script>
 </body>

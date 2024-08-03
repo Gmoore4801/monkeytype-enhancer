@@ -116,28 +116,57 @@ function settingClicked(checkbox, index) {
     });
 }
 
+function parseDate(dateStr) {
+    const parts = dateStr.split('/');
+    return new Date(parts[2], parts[0] - 1, parts[1]);
+}
 
-document.addEventListener("DOMContentLoaded", () => {
-    populateTable();
-    
-    const info = document.getElementsByClassName("info")[0];
-    const stats = document.getElementsByClassName("stats")[0];
-    const faqs = document.getElementsByClassName("faqs")[0];
-    const settings = document.getElementsByClassName("settings")[0];
-    const data = document.getElementsByClassName("data")[0];
-    info.addEventListener("click", () => { slider(info) });
-    stats.addEventListener("click", () => { slider(stats) });
-    faqs.addEventListener("click", () => { slider(faqs) });
-    settings.addEventListener("click", () => { slider(settings) });
-    data.addEventListener("click", () => { slider(data) });
+function streak() {
+    chrome.storage.local.get('typingSessions', result => {
+        let typingSessions = result.typingSessions;
+        let lastDate = parseDate("4/1/2020");
+        const oneDayInMs = 24 * 60 * 60 * 1000;
+        let streak = 0;
+        let maxStreak = 0;
+        typingSessions.forEach(typingSession => {
+            let date = parseDate(typingSession.date);
+            if (date.getTime() - lastDate.getTime() === oneDayInMs) streak++;
+            else if (date.getTime() - lastDate.getTime() > oneDayInMs) streak = 1;
+            maxStreak = Math.max(maxStreak, streak);
+            lastDate = date;
+        });
+        let today = new Date();
+        let month = today.getMonth() + 1;
+        let day = today.getDate();
+        let year = today.getFullYear();
+        today = month + "/" + day + "/" + year;
+        today = parseDate(today);
+        if (today.getTime() - parseDate(typingSessions[typingSessions.length-1].date).getTime() > oneDayInMs) streak = 0;
+        document.getElementById("streak").innerHTML += streak + " days";
+        document.getElementById("max-streak").innerHTML += maxStreak + " days";
+    });
+}
 
-    
-    const off = document.getElementById("off");
-    off.addEventListener("click", () => { settingClicked(off, 0); });
-    const timing = document.getElementById("timing");
-    timing.addEventListener("click", () => { settingClicked(timing, 1); });
-    settingsInit([off, timing]);
 
-    let dataTab = document.getElementsByClassName("data")[0];
-    if (!dataTab.classList.contains("active") && !dataTab.classList.contains("hidden")) dataTab.classList.add("hidden");
-});
+populateTable();
+streak();
+
+const info = document.getElementsByClassName("info")[0];
+const stats = document.getElementsByClassName("stats")[0];
+const faqs = document.getElementsByClassName("faqs")[0];
+const settings = document.getElementsByClassName("settings")[0];
+const data = document.getElementsByClassName("data")[0];
+info.addEventListener("click", () => { slider(info) });
+stats.addEventListener("click", () => { slider(stats) });
+faqs.addEventListener("click", () => { slider(faqs) });
+settings.addEventListener("click", () => { slider(settings) });
+data.addEventListener("click", () => { slider(data) });
+
+const off = document.getElementById("off");
+off.addEventListener("click", () => { settingClicked(off, 0); });
+const timing = document.getElementById("timing");
+timing.addEventListener("click", () => { settingClicked(timing, 1); });
+settingsInit([off, timing]);
+
+let dataTab = document.getElementsByClassName("data")[0];
+if (!dataTab.classList.contains("active") && !dataTab.classList.contains("hidden")) dataTab.classList.add("hidden");
