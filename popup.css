@@ -113,3 +113,19 @@ label:after {
 input:checked + label:after {
     opacity: 1;
 }
+
+#streak, #max-streak {
+    margin: 0;
+}
+
+#change {
+    margin-top: 0;
+}
+
+#data p, #data h2 {
+    margin: 0;
+}
+
+#session-stats {
+    margin-top: 15px;
+}
