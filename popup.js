@@ -26,7 +26,7 @@ function populateTable() {
             let row = tableBody.insertRow();
             row.insertCell(0).textContent = session.date;
             row.insertCell(1).textContent = session.acc;
-            row.insertCell(2).textContent = session.wpm;
+            row.insertCell(2).textContent = Math.round(session.wpm * 100) / 100;
             row.insertCell(3).textContent = session.letter;
             row.insertCell(4).outerHTML = '<td><button class="button" data-index="' + i + '">View Data</button></td>';
 
@@ -59,7 +59,7 @@ function displaySessionData(index) {
     chrome.storage.local.get('typingSessions', result => { acc.innerText += "Accuracy: " + result.typingSessions[result.typingSessions.length-index-1].acc; });
     data.append(acc);
     let wpm = document.createElement('p');
-    chrome.storage.local.get('typingSessions', result => { wpm.innerText += "WPM: " + result.typingSessions[result.typingSessions.length-index-1].wpm; });
+    chrome.storage.local.get('typingSessions', result => { wpm.innerText += "WPM: " + Math.round(result.typingSessions[result.typingSessions.length-index-1].wpm * 100) / 100; });
     data.append(wpm);
     let letterTested = document.createElement('p');
     chrome.storage.local.get('typingSessions', result => { letterTested.innerText += "Letter Tested: " + result.typingSessions[result.typingSessions.length-index-1].letter; });
@@ -158,7 +158,7 @@ function streak() {
                 lastAverage += typingSessions[i].wpm;
             }
             lastAverage = lastAverage / (size / 2);
-            let change = Math.round((recentAverage - lastAverage) * 100) / 100;
+            let change = Math.round((recentAverage - lastAverage) * 100 / (size / 2)) / 100;
             if (change >= 0) change = "+" + change;
             document.getElementById("change").innerHTML += change + " wpm";
         }

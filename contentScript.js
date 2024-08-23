@@ -76,6 +76,7 @@ window.addEventListener('keypress', e => {
                 typingSessions.push(newSession);
                 chrome.storage.local.set({ typingSessions: typingSessions });
             });
+            postStats = true;
         }
         document.querySelector('.textButton[mode="custom"]').click();
         document.querySelector('.customText .textButton').click();
@@ -113,8 +114,9 @@ window.addEventListener('keypress', e => {
     }
     
     async function setEnglish(language) {
-        await delay(400);
+        await delay(600);
         document.querySelector('.textButton[mode="time"]').click();
+        await delay(400);
         document.querySelector('.view-settings').click();
         await delay(600);
         try {
@@ -129,7 +131,7 @@ window.addEventListener('keypress', e => {
     if (timeMinutes < 5) { setEnglish("english_5k"); }
     else if (timeMinutes < 10) { setCustomMode("english 5k"); }
     else if (timeMinutes < 13) { setEnglish("english_1k"); }
-    else if (timeMinutes < 20) { setEnglish("english"); }
+    else if (timeMinutes < 15) { setEnglish("english"); }
 });
 
 
