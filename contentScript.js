@@ -87,7 +87,7 @@ window.addEventListener('keypress', e => {
         document.querySelector('.wordIncludeInput').value = letter;
         document.querySelector('.wordExcludeInput').value = '-';
         document.querySelector('.setButton').click();
-        await delay(150);
+        await delay(200);
         document.querySelector('.buttonGroup [value="random"]').click();
         document.querySelector('.textarea').remove();
         document.querySelector('.buttonsTop').remove();
