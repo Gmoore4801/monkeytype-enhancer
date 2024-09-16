@@ -114,9 +114,9 @@ window.addEventListener('keypress', e => {
     }
     
     async function setEnglish(language) {
-        await delay(600);
+        await delay(500);
         document.querySelector('.textButton[mode="time"]').click();
-        await delay(400);
+        await delay(500);
         document.querySelector('.view-settings').click();
         await delay(600);
         try {

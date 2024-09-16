@@ -114,7 +114,7 @@ input:checked + label:after {
     opacity: 1;
 }
 
-#streak, #max-streak {
+#streak, #max-streak, #ao3, #ao5, #ao12 {
     margin: 0;
 }
 

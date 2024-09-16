@@ -1,5 +1,5 @@
 function populateTableHead() {
-    let table = document.getElementById('stats-table')
+    let table = document.getElementById('stats-table');
     let tableHead = table.createTHead();
     tableHead.innerHTML = '';
 
@@ -121,6 +121,60 @@ function parseDate(dateStr) {
     return new Date(parts[2], parts[0] - 1, parts[1]);
 }
 
+function bestAverage(x, tS) {
+    let sum = 0;
+    for (let i = 0; i < x; i++) {
+        sum += tS[i].wpm;
+    }
+    let bestSum = sum;
+    for (let i = x; i < tS.length; i++) {
+        sum += tS[i].wpm;
+        sum -= tS[i-x].wpm;
+        bestSum = Math.max(bestSum, sum);
+    }
+    return Math.round(bestSum / x * 100) / 100;
+}
+
+function averages() {
+    chrome.storage.local.get('typingSessions', result => {
+        let typingSessions = result.typingSessions || [];
+        let size = typingSessions.length;
+        let table = document.getElementById('averages-table');
+        let tableBody = table.createTBody();
+        if (size >= 3) {
+            let tableHead = table.createTHead();
+            let headRow = tableHead.insertRow();
+            headRow.insertCell(0).outerHTML = "<th></th>";
+            headRow.insertCell(1).outerHTML = "<th>Current</th>";
+            headRow.insertCell(2).outerHTML = "<th>Best</th>";
+            let ao3 = (typingSessions[size-1].wpm + typingSessions[size-2].wpm + typingSessions[size-3].wpm) / 3;
+            ao3 = Math.round(ao3 * 100) / 100;
+            let row = tableBody.insertRow();
+            row.insertCell(0).innerHTML = "<strong>AO3<strong/>";
+            row.insertCell(1).textContent = ao3;
+            row.insertCell(2).textContent = bestAverage(3, typingSessions);
+        }
+        if (size >= 5) {
+            let ao5 = (typingSessions[size-1].wpm + typingSessions[size-2].wpm + typingSessions[size-3].wpm + typingSessions[size-4].wpm + typingSessions[size-5].wpm) / 5;
+            ao5 = Math.round(ao5 * 100) / 100;
+            let row = tableBody.insertRow();
+            row.insertCell(0).innerHTML = "<strong>AO5<strong/>";
+            row.insertCell(1).textContent = ao5;
+            row.insertCell(2).textContent = bestAverage(5, typingSessions);
+        }
+        if (size >= 12) {
+            let ao12 = (typingSessions[size-1].wpm + typingSessions[size-2].wpm + typingSessions[size-3].wpm + typingSessions[size-4].wpm + typingSessions[size-5].wpm + typingSessions[size-6].wpm + typingSessions[size-7].wpm + typingSessions[size-8].wpm + typingSessions[size-9].wpm + typingSessions[size-10].wpm + typingSessions[size-11].wpm + typingSessions[size-12].wpm) / 12;
+            ao12 = Math.round(ao12 * 100) / 100;
+            let row = tableBody.insertRow();
+            row.insertCell(0).innerHTML = "<strong>AO12<strong/>";
+            row.insertCell(1).textContent = ao12;
+            row.insertCell(2).textContent = bestAverage(12, typingSessions);
+        }
+
+
+    });
+}
+
 function streak() {
     chrome.storage.local.get('typingSessions', result => {
         let typingSessions = result.typingSessions || [];
@@ -144,7 +198,7 @@ function streak() {
         if (typingSessions.length > 0 && today.getTime() - parseDate(typingSessions[typingSessions.length-1].date).getTime() > oneDayInMs) streak = 0;
         document.getElementById("streak").innerHTML += streak + " days";
         document.getElementById("max-streak").innerHTML += maxStreak + " days";
-
+        /*
         let size = 8; // must be even
         if (typingSessions.length < size) document.getElementById("change").innerHTML += "You must have at least " + size + " sessions.";
         else {
@@ -161,13 +215,14 @@ function streak() {
             let change = Math.round((recentAverage - lastAverage) * 100 / (size / 2)) / 100;
             if (change >= 0) change = "+" + change;
             document.getElementById("change").innerHTML += change + " wpm";
-        }
+        }*/
     });
 }
 
 
 populateTable();
 streak();
+averages();
 
 const info = document.getElementsByClassName("info")[0];
 const stats = document.getElementsByClassName("stats")[0];
