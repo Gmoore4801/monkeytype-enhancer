@@ -198,24 +198,6 @@ function streak() {
         if (typingSessions.length > 0 && today.getTime() - parseDate(typingSessions[typingSessions.length-1].date).getTime() > oneDayInMs) streak = 0;
         document.getElementById("streak").innerHTML += streak + " days";
         document.getElementById("max-streak").innerHTML += maxStreak + " days";
-        /*
-        let size = 8; // must be even
-        if (typingSessions.length < size) document.getElementById("change").innerHTML += "You must have at least " + size + " sessions.";
-        else {
-            let recentAverage = 0;
-            for (let i = typingSessions.length - size / 2; i < typingSessions.length; i++) {
-                recentAverage += typingSessions[i].wpm;
-            }
-            recentAverage = recentAverage / (size / 2);
-            let lastAverage = 0;
-            for (let i = typingSessions.length - size; i < typingSessions.length - size / 2; i++) {
-                lastAverage += typingSessions[i].wpm;
-            }
-            lastAverage = lastAverage / (size / 2);
-            let change = Math.round((recentAverage - lastAverage) * 100 / (size / 2)) / 100;
-            if (change >= 0) change = "+" + change;
-            document.getElementById("change").innerHTML += change + " wpm";
-        }*/
     });
 }
 
