@@ -98,6 +98,7 @@ window.addEventListener('keypress', e => {
         document.querySelector('.group[data-id="delimiter"]').remove();
         document.querySelector('.group[data-id="newlines"]').remove();
         document.querySelector('.group[data-id="mode"]').remove();
+        document.querySelector('.group[data-id="zeroWidth"]').remove();
         document.querySelector('.words').remove()
         document.querySelector('.or').remove()
         document.querySelector('.sections').remove()

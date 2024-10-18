@@ -170,8 +170,6 @@ function averages() {
             row.insertCell(1).textContent = ao12;
             row.insertCell(2).textContent = bestAverage(12, typingSessions);
         }
-
-
     });
 }
 
