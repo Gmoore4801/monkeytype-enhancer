@@ -91,8 +91,13 @@ window.addEventListener('keypress', e => {
         document.querySelector('.buttonGroup [value="random"]').click();
         document.querySelector('.textarea').remove();
         document.querySelector('.buttonsTop').remove();
-        document.querySelector('.challengeWarning').insertAdjacentHTML("afterend", `<h2>Select the test length (15 is recommended)</h2>`);
-        
+        chrome.storage.local.get('typingSessions', result => {
+            let tS = result.typingSessions || [];
+            document.querySelector('.challengeWarning').insertAdjacentHTML("afterend", `<p><strong>WPM:</strong> ${tS[tS.length-1].wpm}</p>`)
+            document.querySelector('.challengeWarning').insertAdjacentHTML("afterend", `<p><strong>Accuracy:</strong> ${tS[tS.length-1].acc}</p>`)
+            document.querySelector('.challengeWarning').insertAdjacentHTML("afterend", `<p><strong>Challenge letter:</strong> ${tS[tS.length-1].letter}</p><p></p>`)
+        });
+        document.querySelector('.challengeWarning').insertAdjacentHTML("afterend", '<h2>Enter the test length</h2>');
         document.querySelector('.group[data-id="fancy"]').remove();
         document.querySelector('.group[data-id="control"]').remove();
         document.querySelector('.group[data-id="delimiter"]').remove();
