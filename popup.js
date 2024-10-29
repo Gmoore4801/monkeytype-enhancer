@@ -7,7 +7,7 @@ function populateTableHead() {
     row.insertCell(0).outerHTML = "<th>Date</th>";
     row.insertCell(1).outerHTML = "<th>Accuracy</th>";
     row.insertCell(2).outerHTML = "<th>WPM</th>";
-    row.insertCell(3).outerHTML = "<th>Letter Tested</th>";
+    row.insertCell(3).outerHTML = "<th>Letter Practiced</th>";
     row.insertCell(4).outerHTML = "<th>Session Data</th>";
 }
 

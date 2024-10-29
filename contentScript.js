@@ -93,9 +93,7 @@ window.addEventListener('keypress', e => {
         document.querySelector('.buttonsTop').remove();
         chrome.storage.local.get('typingSessions', result => {
             let tS = result.typingSessions || [];
-            document.querySelector('.challengeWarning').insertAdjacentHTML("afterend", `<p><strong>WPM:</strong> ${tS[tS.length-1].wpm}</p>`)
-            document.querySelector('.challengeWarning').insertAdjacentHTML("afterend", `<p><strong>Accuracy:</strong> ${tS[tS.length-1].acc}</p>`)
-            document.querySelector('.challengeWarning').insertAdjacentHTML("afterend", `<p><strong>Challenge letter:</strong> ${tS[tS.length-1].letter}</p><p></p>`)
+            document.querySelector('.challengeWarning').insertAdjacentHTML("afterend", `<h2>Stats</h2><p style="margin:0;"><strong id="showWPM">WPM:</strong> ${tS[tS.length-1].wpm}</p><p style="margin:0;"><strong id="showAcc">Accuracy:</strong> ${tS[tS.length-1].acc}</p><p style="margin:0;"><strong>Challenge letter:</strong> ${tS[tS.length-1].letter}</p><p style="margin:40px;"></p>`)
         });
         document.querySelector('.challengeWarning').insertAdjacentHTML("afterend", '<h2>Enter the test length</h2>');
         document.querySelector('.group[data-id="fancy"]').remove();
