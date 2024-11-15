@@ -1,6 +1,6 @@
 {
     "name": "MonkeyType Enhancer",
-    "version": "1.2",
+    "version": "1.2.1",
     "description": "Improves practice quality on MonkeyType",
     "permissions": ["storage"],
     "host_permissions": ["https://*.monkeytype.com/*"],
