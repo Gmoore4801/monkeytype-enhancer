@@ -178,11 +178,13 @@ function streak() {
         let typingSessions = result.typingSessions || [];
         let lastDate = parseDate("4/1/2020");
         const oneDayInMs = 24 * 60 * 60 * 1000;
+        const dayPlusHour = oneDayInMs / 24 * 25;
+        const dayMinusHour = oneDayInMs / 24 * 23;
         let streak = 0;
         let maxStreak = 0;
         typingSessions.forEach(typingSession => {
             let date = parseDate(typingSession.date);
-            if (date.getTime() - lastDate.getTime() === oneDayInMs) streak++;
+            if (date.getTime() - lastDate.getTime() === oneDayInMs || date.getTime() - lastDate.getTime() === dayPlusHour || date.getTime() - lastDate.getTime() === dayMinusHour) streak++;
             else if (date.getTime() - lastDate.getTime() > oneDayInMs) streak = 1;
             maxStreak = Math.max(maxStreak, streak);
             lastDate = date;
