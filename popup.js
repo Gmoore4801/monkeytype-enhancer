@@ -141,12 +141,20 @@ function averages() {
         let size = typingSessions.length;
         let table = document.getElementById('averages-table');
         let tableBody = table.createTBody();
-        if (size >= 3) {
+        if (size >= 1) {
             let tableHead = table.createTHead();
             let headRow = tableHead.insertRow();
             headRow.insertCell(0).outerHTML = "<th></th>";
             headRow.insertCell(1).outerHTML = "<th>Current</th>";
             headRow.insertCell(2).outerHTML = "<th>Best</th>";
+            let single = typingSessions[size-1].wpm;
+            single = Math.round(single * 100) / 100;
+            let row = tableBody.insertRow();
+            row.insertCell(0).innerHTML = "<strong>Time<strong/>";
+            row.insertCell(1).textContent = single;
+            row.insertCell(2).textContent = bestAverage(1, typingSessions);
+        }
+        if (size >= 3) {
             let ao3 = (typingSessions[size-1].wpm + typingSessions[size-2].wpm + typingSessions[size-3].wpm) / 3;
             ao3 = Math.round(ao3 * 100) / 100;
             let row = tableBody.insertRow();
