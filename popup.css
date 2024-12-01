@@ -43,12 +43,31 @@ ul {
     display: none;
 }
 
-#slider li:hover, .active {
+#slider li:hover, .active, .active2 {
     background-color: #27282b;
     transition-duration: 250ms;
 }
 
-.active {
+.small-slider li {
+    display: inline;
+    padding: 8px 16px;
+    border-radius: 20px;
+}
+
+.small-slider li:hover, .active, .active2 {
+    background-color: #27282b;
+    transition-duration: 250ms;
+}
+
+.setting-slider {
+    display: flex;
+}
+
+.setting-slider p, .setting-slider ul {
+    margin: 0;
+}
+
+.active, .active2 {
     background-color: #2b2c30;
 }
 

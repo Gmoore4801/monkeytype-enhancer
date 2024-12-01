@@ -64,6 +64,12 @@ function displaySessionData(index) {
     let letterTested = document.createElement('p');
     chrome.storage.local.get('typingSessions', result => { letterTested.innerText += "Letter Tested: " + result.typingSessions[result.typingSessions.length-index-1].letter; });
     data.append(letterTested);
+    let time = document.createElement('p');
+    chrome.storage.local.get('typingSessions', result => {
+        let sessionLength = Object.hasOwn(result.typingSessions[result.typingSessions.length-index-1], 'time') ? result.typingSessions[result.typingSessions.length-index-1].time : 15;
+        time.innerText += "Session Length: " + sessionLength + " min";
+    });
+    data.append(time);
     let table = document.createElement('table');
     table.setAttribute("id", "session-stats");
     data.append(table);
@@ -96,6 +102,20 @@ function slider(section) {
     document.getElementById(active.classList[0]).classList.add("hidden");
     section.classList.add("active");
     document.getElementById(section.classList[0]).classList.remove("hidden");
+}
+
+function smallSlider(section) {
+    const active2 = document.getElementsByClassName("active2")[0];
+    if (active2 === section) return;
+    active2.classList.remove("active2");
+    section.classList.add("active2");
+
+    let time = 5
+    if (section.innerText == "10 min") time = 10;
+    else if (section.innerText == "15 min") time = 15;
+    else if (section.innerText == "20 min") time = 20;
+    else if (section.innerText == "30 min") time = 30;
+    chrome.storage.local.set({ time: time });
 }
 
 function settingsInit(settings) {
@@ -225,6 +245,26 @@ faqs.addEventListener("click", () => { slider(faqs) });
 settings.addEventListener("click", () => { slider(settings) });
 data.addEventListener("click", () => { slider(data) });
 
+const five = document.getElementById("five");
+const ten = document.getElementById("ten");
+const fifteen = document.getElementById("fifteen");
+const twenty = document.getElementById("twenty");
+const thirty = document.getElementById("thirty");
+five.addEventListener("click", () => { smallSlider(five) });
+ten.addEventListener("click", () => { smallSlider(ten) });
+fifteen.addEventListener("click", () => { smallSlider(fifteen) });
+twenty.addEventListener("click", () => { smallSlider(twenty) });
+thirty.addEventListener("click", () => { smallSlider(thirty) });
+
+chrome.storage.local.get("time", result => {
+    let time = result.time || 15;
+    if (time == 5) five.classList.add("active2");
+    else if (time == 10) ten.classList.add("active2");
+    else if (time == 15) fifteen.classList.add("active2");
+    else if (time == 20) twenty.classList.add("active2");
+    else if (time == 30) thirty.classList.add("active2");
+});
+
 const off = document.getElementById("off");
 off.addEventListener("click", () => { settingClicked(off, 0); });
 const timing = document.getElementById("timing");
@@ -235,5 +275,9 @@ let dataTab = document.getElementsByClassName("data")[0];
 if (!dataTab.classList.contains("active") && !dataTab.classList.contains("hidden")) dataTab.classList.add("hidden");
 
 chrome.storage.local.get("checkboxes", result => {
-    if (result.checkboxes == null) chrome.storage.local.set({checkboxes: [false, false]}); // one false for each setting created
+    if (result.checkboxes == null) chrome.storage.local.set({checkboxes: [false, false]});
+});
+
+chrome.storage.local.get("time", result => {
+    if (result.time == null) chrome.storage.local.set({time: 15});
 });

@@ -27,14 +27,7 @@
       <h2>Your stats: </h2>
       <p id="streak"><strong>Current Streak: </strong></p>
       <p id="max-streak"><strong>Longest Streak: </strong></p>
-      <!--<p id="change"><strong>Average change per session: </strong></p>-->
-      <!--AO3, AO5, AO12-->
       <table id="averages-table"></table>
-      <!--
-      <p id="ao3" class="hidden"><strong>AO3: </strong></p>
-      <p id="ao5" class="hidden"><strong>AO5: </strong></p>
-      <p id="ao12" class="hidden"><strong>AO12: </strong></p>
-      -->
       <p id="no-stats"></p>
       <table id="stats-table">
       </table>
@@ -48,6 +41,17 @@
     </div>
     <div id="settings" class="hidden">
       <h2>Settings</h2>
+      <div class="setting setting-slider">
+        <p style="margin-right:20px">Session Length:</p>
+        <ul class="small-slider">
+          <li id="five">5 min</li>
+          <li id="ten">10 min</li>
+          <li id="fifteen">15 min</li>
+          <li id="twenty">20 min</li>
+          <li id="thirty">30 min</li>
+        </ul>
+      </div>
+      <br>
       <div class="setting">
         <input type="checkbox" id="off">
         <label for="off">Turn off MonkeyType Enhancer</label>
@@ -59,9 +63,7 @@
       </div>
       <p>Reload page to initiate changes.</p>
     </div>
-    <div id="data" class="hidden">
-      <table id="session-stats"></table>
-    </div>
+    <div id="data" class="hidden"></div>
   </div>
   <script src="popup.js"></script>
 </body>
