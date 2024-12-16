@@ -62,7 +62,7 @@ function displaySessionData(index) {
     chrome.storage.local.get('typingSessions', result => { wpm.innerText += "WPM: " + Math.round(result.typingSessions[result.typingSessions.length-index-1].wpm * 100) / 100; });
     data.append(wpm);
     let letterTested = document.createElement('p');
-    chrome.storage.local.get('typingSessions', result => { letterTested.innerText += "Letter Tested: " + result.typingSessions[result.typingSessions.length-index-1].letter; });
+    chrome.storage.local.get('typingSessions', result => { letterTested.innerText += "Letter Practiced: " + result.typingSessions[result.typingSessions.length-index-1].letter; });
     data.append(letterTested);
     let time = document.createElement('p');
     chrome.storage.local.get('typingSessions', result => {
